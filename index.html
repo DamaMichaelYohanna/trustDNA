@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustDNA | The Programmable Trust Layer for Digital Applications</title>
+  <meta name="description" content="Stripe for risk and security decisions. Plug-in risk intelligence that evaluates whether a user, device, session, or transaction should be trusted in real-time.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Backgrounds -->
+  <div class="glow-sphere glow-1"></div>
+  <div class="glow-sphere glow-2"></div>
+  <div class="glow-sphere glow-3"></div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar-wrapper">
+    <nav class="navbar container">
+      <a href="#" class="nav-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <span class="brand-text">Trust<span class="brand-accent">DNA</span></span>
+        <span class="badge badge-pulse">v1.0 BETA</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#simulator" class="nav-link">Live Playground</a>
+        <a href="#developers" class="nav-link">Developer SDK</a>
+        <a href="#plugins" class="nav-link">Modular Plugins</a>
+        <a href="#policies" class="nav-link">Policy Engine</a>
+        <a href="#zero-pii" class="nav-link">Privacy (Zero-PII)</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+      </div>
+
+      <div class="nav-actions">
+        <button id="open-sandbox-btn" class="btn btn-primary btn-sm">
+          <span>Get API Keys</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section container">
+    <div class="hero-badge-container">
+      <div class="hero-pill">
+        <span class="pill-dot"></span>
+        <span class="pill-title">RISK INTELLIGENCE INFRASTRUCTURE</span>
+        <span class="pill-sep">•</span>
+        <span class="pill-sub">Stripe for Security Decisions</span>
+      </div>
+    </div>
+
+    <h1 class="hero-title">
+      The Programmable <br>
+      <span class="text-gradient">Trust Layer</span> for Digital Apps
+    </h1>
+
+    <p class="hero-subtitle">
+      Evaluate whether a user, device, session, or transaction should be trusted in real-time. 
+      Zero PII required. One line of SDK. Sub-50ms instant decisions: 
+      <span class="highlight-green">Allow</span>, <span class="highlight-amber">Challenge</span>, or <span class="highlight-red">Block</span>.
+    </p>
+
+    <div class="hero-cta-group">
+      <a href="#simulator" class="btn btn-primary btn-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span>Try Live Simulator</span>
+      </a>
+      <a href="#developers" class="btn btn-secondary btn-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <span>View Quickstart Code</span>
+      </a>
+    </div>
+
+    <!-- Live Metrics Strip -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value text-cyan">&lt; 45ms</div>
+        <div class="metric-label">P99 Decision Latency</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value text-emerald">0 PII</div>
+        <div class="metric-label">No Names, Passwords, or Balances</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value text-indigo">3 Lines</div>
+        <div class="metric-label">Frontend Web SDK Setup</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value text-purple">99.99%</div>
+        <div class="metric-label">Multi-Tenant Uptime SLA</div>
+      </div>
+    </div>
+
+    <!-- Hero Architecture Interactive Diagram -->
+    <div class="hero-architecture-card">
+      <div class="arch-header">
+        <div class="arch-dot red"></div>
+        <div class="arch-dot yellow"></div>
+        <div class="arch-dot green"></div>
+        <span class="arch-title">TrustDNA Ingestion & Decision Pipeline</span>
+        <span class="live-tag"><span class="ping-dot"></span> LIVE PIPELINE ACTIVE</span>
+      </div>
+      
+      <div class="pipeline-flow">
+        <div class="flow-step">
+          <div class="step-icon">💻</div>
+          <div class="step-title">Customer App</div>
+          <div class="step-desc">Login / Transfer / Session</div>
+        </div>
+
+        <div class="flow-arrow">
+          <div class="arrow-line"></div>
+          <span class="arrow-label">Web SDK Signals</span>
+        </div>
+
+        <div class="flow-step highlight-step">
+          <div class="step-icon">⚡</div>
+          <div class="step-title">TrustDNA Core</div>
+          <div class="step-desc">Device • Behavior • Network • Tx</div>
+        </div>
+
+        <div class="flow-arrow">
+          <div class="arrow-line"></div>
+          <span class="arrow-label">&lt; 45ms Evaluation</span>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-icon">🛡️</div>
+          <div class="step-title">Instant Decision</div>
+          <div class="step-badges">
+            <span class="tag-allow">ALLOW</span>
+            <span class="tag-mfa">CHALLENGE</span>
+            <span class="tag-block">BLOCK</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Risk Simulator Section (The Main Interactive Playground) -->
+  <section id="simulator" class="section simulator-section container">
+    <div class="section-header">
+      <span class="section-tag">HERO INTERACTIVE SHOWCASE</span>
+      <h2 class="section-title">Test the Risk Engine in Real-Time</h2>
+      <p class="section-desc">
+        Tweak signals below or click real-world presets. Watch TrustDNA's modular plugin engine calculate risk scores, determine decisions, and output explainable JSON in milliseconds.
+      </p>
+    </div>
+
+    <!-- Scenario Presets Bar -->
+    <div class="presets-bar">
+      <span class="preset-label">Quick Presets:</span>
+      <button class="preset-btn active" data-preset="legit">
+        <span class="p-dot green"></span>
+        <span>🟢 Legitimate User (Abuja, iPhone, ₦45,000)</span>
+      </button>
+      <button class="preset-btn" data-preset="suspicious">
+        <span class="p-dot amber"></span>
+        <span>🟡 Suspicious Device & Spike (Lagos, Emulated, ₦650,000)</span>
+      </button>
+      <button class="preset-btn" data-preset="attack">
+        <span class="p-dot red"></span>
+        <span>🔴 Account Takeover Attack (Tor Exit, Bot Cadence, ₦4,500,000)</span>
+      </button>
+    </div>
+
+    <div class="simulator-layout">
+      <!-- Left: Signal Controls -->
+      <div class="sim-card controls-card">
+        <div class="sim-card-header">
+          <div class="header-left">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+            <h3>Live Telemetry Input Signals</h3>
+          </div>
+          <button id="reset-sim-btn" class="btn-text">Reset Defaults</button>
+        </div>
+
+        <div class="sim-card-body">
+          <!-- Control 1: Device State -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <label class="control-label">
+                <span class="ctrl-icon">📱</span> Device & Hardware Entropy
+              </label>
+              <span id="device-badge" class="badge-status">Known Device</span>
+            </div>
+            <select id="device-select" class="form-select">
+              <option value="known_trusted">Known Device (Registered iPhone 15 Pro, iOS 18)</option>
+              <option value="new_fingerprint">New Device (Unseen Chrome / Windows 11)</option>
+              <option value="emulated_rooted">High Risk (Rooted / Emulated Android / Headless Chrome)</option>
+            </select>
+          </div>
+
+          <!-- Control 2: Network & Location -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <label class="control-label">
+                <span class="ctrl-icon">🌐</span> Network & IP Intelligence
+              </label>
+              <span id="network-badge" class="badge-status">Residential ISP</span>
+            </div>
+            <select id="network-select" class="form-select">
+              <option value="residential">Residential MTN/Airtel (Abuja, Nigeria)</option>
+              <option value="datacenter_vpn">Commercial VPN / Datacenter Proxy (London, UK)</option>
+              <option value="tor_exit">Tor Exit Node / Anonymizing Relay</option>
+            </select>
+          </div>
+
+          <!-- Control 3: Impossible Travel Slider -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <label class="control-label">
+                <span class="ctrl-icon">✈️</span> Geographic Velocity (Km traveled in last 15 min)
+              </label>
+              <span id="travel-val" class="ctrl-value">0 km (Normal)</span>
+            </div>
+            <input type="range" id="travel-slider" min="0" max="4000" step="50" value="0" class="form-range">
+            <div class="range-labels">
+              <span>0 km</span>
+              <span>800 km (Flight limit)</span>
+              <span>4,000 km (Impossible Travel)</span>
+            </div>
+          </div>
+
+          <!-- Control 4: Behavioral Biometrics -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <label class="control-label">
+                <span class="ctrl-icon">⌨️</span> Behavioral Typing Cadence & Mouse Velocity
+              </label>
+              <span id="behavior-badge" class="badge-status">Consistent Baseline</span>
+            </div>
+            <select id="behavior-select" class="form-select">
+              <option value="natural">Natural Human Typing (Flight time: 110ms, Variance: 0.18)</option>
+              <option value="deviated">Mild Deviation (Unusual typing speed / mobile touch variance)</option>
+              <option value="robotic_paste">Automated Bot / Instant Script Paste (0ms flight variance)</option>
+            </select>
+          </div>
+
+          <!-- Control 5: Transaction Amount -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <label class="control-label">
+                <span class="ctrl-icon">💳</span> Transaction Amount (NGN)
+              </label>
+              <span id="amount-val" class="ctrl-value">₦45,000</span>
+            </div>
+            <input type="range" id="amount-slider" min="5000" max="5000000" step="25000" value="45000" class="form-range">
+            <div class="range-labels">
+              <span>₦5K (Routine)</span>
+              <span>₦500K</span>
+              <span>₦5,000,000 (Spike)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Real-time Output & Engine Decision -->
+      <div class="sim-card decision-card">
+        <div class="sim-card-header">
+          <div class="header-left">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <h3>TrustDNA Risk Assessment</h3>
+          </div>
+          <div class="eval-speed">
+            <span class="pulse-green"></span>
+            <span id="eval-time">Evaluated in 28ms</span>
+          </div>
+        </div>
+
+        <div class="sim-card-body">
+          <!-- Main Score Gauge & Decision -->
+          <div class="score-display-row">
+            <div class="score-dial-wrap">
+              <div class="score-circle" id="score-circle">
+                <div class="score-inner">
+                  <div class="score-number" id="risk-score">92</div>
+                  <div class="score-max">/ 100</div>
+                  <div class="score-label">TRUST SCORE</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="decision-meta">
+              <div class="decision-title-row">
+                <span class="meta-label">RECOMMENDED ACTION:</span>
+                <div class="decision-badge badge-allow" id="decision-badge">
+                  <span class="decision-icon">✓</span>
+                  <span id="decision-text">ALLOW</span>
+                </div>
+              </div>
+
+              <div class="risk-level-row">
+                <span class="meta-label">Risk Level:</span>
+                <span id="risk-level" class="risk-level-val text-emerald">LOW RISK</span>
+              </div>
+
+              <!-- Breakdown Sub-scores -->
+              <div class="subscore-breakdown">
+                <div class="subscore-item">
+                  <div class="subscore-label">Device Score</div>
+                  <div class="subscore-bar-bg"><div id="sub-device-bar" class="subscore-bar" style="width: 95%;"></div></div>
+                  <span id="sub-device-val">95</span>
+                </div>
+                <div class="subscore-item">
+                  <div class="subscore-label">Behavior Score</div>
+                  <div class="subscore-bar-bg"><div id="sub-behavior-bar" class="subscore-bar" style="width: 90%;"></div></div>
+                  <span id="sub-behavior-val">90</span>
+                </div>
+                <div class="subscore-item">
+                  <div class="subscore-label">Network Intel</div>
+                  <div class="subscore-bar-bg"><div id="sub-network-bar" class="subscore-bar" style="width: 92%;"></div></div>
+                  <span id="sub-network-val">92</span>
+                </div>
+                <div class="subscore-item">
+                  <div class="subscore-label">Transaction Velocity</div>
+                  <div class="subscore-bar-bg"><div id="sub-tx-bar" class="subscore-bar" style="width: 90%;"></div></div>
+                  <span id="sub-tx-val">90</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Explainability Reason Codes -->
+          <div class="reasons-wrap">
+            <span class="meta-label">Explainable Signals & Reasoning:</span>
+            <div id="reasons-list" class="reasons-tags">
+              <span class="reason-tag success">✓ known_device_profile</span>
+              <span class="reason-tag success">✓ residential_ip_clean</span>
+              <span class="reason-tag success">✓ consistent_typing_cadence</span>
+              <span class="reason-tag success">✓ within_normal_spending_baseline</span>
+            </div>
+          </div>
+
+          <!-- Live JSON Output Preview -->
+          <div class="json-preview-wrap">
+            <div class="json-header">
+              <span>API Response JSON (POST /v1/risk/evaluate)</span>
+              <button id="copy-json-btn" class="btn-copy">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                <span id="copy-json-text">Copy JSON</span>
+              </button>
+            </div>
+            <pre class="json-code" id="json-code-display"><code>{
+  "trust_score": 92,
+  "decision": "allow",
+  "risk_level": "low",
+  "latency_ms": 28,
+  "reasons": [
+    "known_device_profile",
+    "residential_ip_clean",
+    "consistent_typing_cadence",
+    "within_normal_spending_baseline"
+  ],
+  "module_scores": {
+    "device": 95,
+    "behavior": 90,
+    "network": 92,
+    "transaction": 90
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Developer Experience Section (Code Switcher) -->
+  <section id="developers" class="section container">
+    <div class="section-header">
+      <span class="section-tag">DEVELOPER-FIRST EXPERIENCE</span>
+      <h2 class="section-title">Integrate in Under 30 Minutes</h2>
+      <p class="section-desc">
+        No complicated biometric training. Install our lightweight SDK, pass security telemetry tokens to your backend, and get instant risk decisions with Stripe-like simplicity.
+      </p>
+    </div>
+
+    <div class="code-showcase-card">
+      <div class="code-nav-tabs">
+        <button class="code-tab active" data-tab="js">Frontend JavaScript SDK</button>
+        <button class="code-tab" data-tab="node">Node.js (Backend)</button>
+        <button class="code-tab" data-tab="python">Python (FastAPI / Django)</button>
+        <button class="code-tab" data-tab="curl">cURL REST API</button>
+        <button class="code-tab" data-tab="webhook">Real-Time Webhooks</button>
+      </div>
+
+      <div class="code-content-wrap">
+        <!-- JS SDK Tab -->
+        <div class="tab-pane active" id="pane-js">
+          <div class="code-snippet-header">
+            <span class="file-name">index.html / App.jsx</span>
+            <button class="btn-copy-code" data-code="js">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre class="code-block"><code><span class="comment">&lt;!-- 1. Include TrustDNA Web SDK (&lt; 20KB, Zero-Dependency) --&gt;</span>
+<span class="keyword">&lt;script</span> <span class="attr">src</span>=<span class="string">"https://cdn.trustdna.com/v1/sdk.js"</span><span class="keyword">&gt;&lt;/script&gt;</span>
+
+<span class="keyword">&lt;script&gt;</span>
+  <span class="comment">// 2. Initialize with your Publishable Key</span>
+  <span class="keyword">const</span> trustdna = <span class="type">TrustDNA</span>.<span class="func">init</span>({
+    <span class="prop">publishableKey</span>: <span class="string">"td_pub_live_9a8f4c2e11"</span>
+  });
+
+  <span class="comment">// 3. Collect non-intrusive telemetry token on transaction or login</span>
+  <span class="keyword">async function</span> <span class="func">onPaymentSubmit</span>() {
+    <span class="keyword">const</span> telemetryToken = <span class="keyword">await</span> trustdna.<span class="func">getTelemetryToken</span>();
+    
+    <span class="comment">// Pass token along with your API request to your backend</span>
+    <span class="keyword">await</span> <span class="func">fetch</span>(<span class="string">"/api/transfer"</span>, {
+      <span class="prop">method</span>: <span class="string">"POST"</span>,
+      <span class="prop">body</span>: <span class="type">JSON</span>.<span class="func">stringify</span>({
+        <span class="prop">amount</span>: <span class="number">450000</span>,
+        <span class="prop">currency</span>: <span class="string">"NGN"</span>,
+        <span class="prop">trustdna_token</span>: telemetryToken
+      })
+    });
+  }
+<span class="keyword">&lt;/script&gt;</span></code></pre>
+        </div>
+
+        <!-- Node.js Tab -->
+        <div class="tab-pane" id="pane-node">
+          <div class="code-snippet-header">
+            <span class="file-name">server.js</span>
+            <button class="btn-copy-code" data-code="node">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre class="code-block"><code><span class="keyword">import</span> { <span class="type">TrustDNA</span> } <span class="keyword">from</span> <span class="string">"@trustdna/node"</span>;
+
+<span class="keyword">const</span> trustdna = <span class="keyword">new</span> <span class="type">TrustDNA</span>({
+  <span class="prop">secretKey</span>: process.env.<span class="prop">TRUSTDNA_SECRET_KEY</span>
+});
+
+app.<span class="func">post</span>(<span class="string">"/api/transfer"</span>, <span class="keyword">async</span> (req, res) =&gt; {
+  <span class="comment">// Query real-time risk decision from TrustDNA</span>
+  <span class="keyword">const</span> assessment = <span class="keyword">await</span> trustdna.risk.<span class="func">evaluate</span>({
+    <span class="prop">userId</span>: req.user.id,
+    <span class="prop">telemetryToken</span>: req.body.trustdna_token,
+    <span class="prop">transaction</span>: {
+      <span class="prop">amount</span>: req.body.amount,
+      <span class="prop">currency</span>: <span class="string">"NGN"</span>
+    }
+  });
+
+  <span class="comment">// Act on decision based on your configured policies</span>
+  <span class="keyword">if</span> (assessment.decision === <span class="string">"block"</span>) {
+    <span class="keyword">return</span> res.<span class="func">status</span>(<span class="number">403</span>).<span class="func">json</span>({ <span class="prop">error</span>: <span class="string">"Transaction blocked for security."</span> });
+  }
+
+  <span class="keyword">if</span> (assessment.decision === <span class="string">"challenge"</span>) {
+    <span class="keyword">return</span> res.<span class="func">json</span>({ <span class="prop">requireMFA</span>: <span class="keyword">true</span>, <span class="prop">challengeId</span>: assessment.challenge_id });
+  }
+
+  <span class="comment">// Allow transaction to proceed smoothly</span>
+  <span class="keyword">await</span> <span class="func">processPayment</span>(req.body);
+  <span class="keyword">return</span> res.<span class="func">json</span>({ <span class="prop">success</span>: <span class="keyword">true</span> });
+});</code></pre>
+        </div>
+
+        <!-- Python Tab -->
+        <div class="tab-pane" id="pane-python">
+          <div class="code-snippet-header">
+            <span class="file-name">main.py</span>
+            <button class="btn-copy-code" data-code="python">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre class="code-block"><code><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, HTTPException
+<span class="keyword">from</span> trustdna <span class="keyword">import</span> TrustDNAClient
+
+client = <span class="type">TrustDNAClient</span>(secret_key=<span class="string">"td_sec_live_9a8f4c2e11"</span>)
+app = <span class="func">FastAPI</span>()
+
+<span class="keyword">@app.post</span>(<span class="string">"/api/transfer"</span>)
+<span class="keyword">async def</span> <span class="func">handle_transfer</span>(payload: TransferRequest):
+    <span class="comment"># Evaluate risk in &lt; 40ms</span>
+    assessment = <span class="keyword">await</span> client.risk.<span class="func">evaluate</span>(
+        user_id=payload.user_id,
+        telemetry_token=payload.trustdna_token,
+        transaction={<span class="string">"amount"</span>: payload.amount, <span class="string">"currency"</span>: <span class="string">"NGN"</span>}
+    )
+
+    <span class="keyword">if</span> assessment.decision == <span class="string">"block"</span>:
+        <span class="keyword">raise</span> <span class="type">HTTPException</span>(status_code=<span class="number">403</span>, detail=<span class="string">"High risk anomaly detected"</span>)
+    
+    <span class="keyword">if</span> assessment.decision == <span class="string">"challenge"</span>:
+        <span class="keyword">return</span> {<span class="string">"step_up_mfa_required"</span>: <span class="keyword">True</span>, <span class="string">"reasons"</span>: assessment.reasons}
+
+    <span class="comment"># Execute transfer</span>
+    <span class="keyword">return</span> {<span class="string">"status"</span>: <span class="string">"approved"</span>, <span class="string">"trust_score"</span>: assessment.trust_score}</code></pre>
+        </div>
+
+        <!-- cURL Tab -->
+        <div class="tab-pane" id="pane-curl">
+          <div class="code-snippet-header">
+            <span class="file-name">Terminal / Bash</span>
+            <button class="btn-copy-code" data-code="curl">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre class="code-block"><code>curl -X POST https://api.trustdna.com/v1/risk/evaluate \
+  -H <span class="string">"Authorization: Bearer td_sec_live_9a8f4c2e11"</span> \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{
+    "customer_id": "usr_82931",
+    "telemetry_token": "td_tok_live_7x89ab12cd",
+    "event_type": "transaction",
+    "transaction": {
+      "amount": 450000,
+      "currency": "NGN"
+    }
+  }'</span></code></pre>
+        </div>
+
+        <!-- Webhook Tab -->
+        <div class="tab-pane" id="pane-webhook">
+          <div class="code-snippet-header">
+            <span class="file-name">webhooks/trustdna.js</span>
+            <button class="btn-copy-code" data-code="webhook">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre class="code-block"><code><span class="comment">// Handle asynchronous security events sent from TrustDNA</span>
+app.<span class="func">post</span>(<span class="string">"/webhooks/trustdna"</span>, <span class="keyword">async</span> (req, res) =&gt; {
+  <span class="keyword">const</span> event = req.body;
+
+  <span class="keyword">switch</span> (event.type) {
+    <span class="keyword">case</span> <span class="string">"account_takeover_detected"</span>:
+      <span class="comment">// Force terminate active session & notify user</span>
+      <span class="keyword">await</span> <span class="func">revokeUserSessions</span>(event.user_id);
+      <span class="keyword">await</span> <span class="func">sendSecurityAlertEmail</span>(event.user_id, event.reasons);
+      <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string">"impossible_travel_flagged"</span>:
+      <span class="keyword">await</span> <span class="func">promptSecondaryBiometrics</span>(event.user_id);
+      <span class="keyword">break</span>;
+  }
+
+  res.<span class="func">sendStatus</span>(<span class="number">200</span>);
+});</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modular Security Plugins Grid -->
+  <section id="plugins" class="section plugins-section container">
+    <div class="section-header">
+      <span class="section-tag">PLUGGABLE SAAS ARCHITECTURE</span>
+      <h2 class="section-title">Plug In Only What Your Business Needs</h2>
+      <p class="section-desc">
+        Don't buy a rigid monolithic fraud suite. Choose and activate standalone intelligence modules with zero re-architecture.
+      </p>
+    </div>
+
+    <div class="plugins-grid">
+      <!-- Plugin 1 -->
+      <div class="plugin-card">
+        <div class="plugin-icon-wrap bg-cyan-glow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        </div>
+        <div class="plugin-status-badge active-badge">CORE MODULE</div>
+        <h3 class="plugin-title">Device Intelligence</h3>
+        <p class="plugin-desc">
+          High-entropy browser and hardware fingerprinting, canvas hash, root/jailbreak detection, and anti-spoofing indicators.
+        </p>
+        <ul class="plugin-features">
+          <li>✓ Persistent hardware hashing</li>
+          <li>✓ Virtual machine / Emulator detection</li>
+          <li>✓ Incognito / Private browsing flags</li>
+        </ul>
+      </div>
+
+      <!-- Plugin 2 -->
+      <div class="plugin-card">
+        <div class="plugin-icon-wrap bg-indigo-glow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><path d="M9 21h6"/></svg>
+        </div>
+        <div class="plugin-status-badge active-badge">CORE MODULE</div>
+        <h3 class="plugin-title">Behavioral Biometrics</h3>
+        <p class="plugin-desc">
+          Continuous passive profiling of keystroke rhythm, key flight time, typing cadence variance, and pointer dynamics.
+        </p>
+        <ul class="plugin-features">
+          <li>✓ Flight-time & dwell-time analysis</li>
+          <li>✓ Human vs Bot cadence deviation</li>
+          <li>✓ Adaptive user baseline profiling</li>
+        </ul>
+      </div>
+
+      <!-- Plugin 3 -->
+      <div class="plugin-card">
+        <div class="plugin-icon-wrap bg-emerald-glow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+        </div>
+        <div class="plugin-status-badge active-badge">CORE MODULE</div>
+        <h3 class="plugin-title">Transaction Risk Engine</h3>
+        <p class="plugin-desc">
+          Evaluates anomalous spend spikes, rapid velocity anomalies, time-of-day deviations, and destination risk tiers.
+        </p>
+        <ul class="plugin-features">
+          <li>✓ Spending velocity sliding windows</li>
+          <li>✓ Multiplier spike anomaly detection</li>
+          <li>✓ Historical spend cluster modeling</li>
+        </ul>
+      </div>
+
+      <!-- Plugin 4 -->
+      <div class="plugin-card">
+        <div class="plugin-icon-wrap bg-purple-glow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="plugin-status-badge">ADD-ON</div>
+        <h3 class="plugin-title">Network & VPN Intelligence</h3>
+        <p class="plugin-desc">
+          Real-time identification of residential vs datacenter IP ranges, Tor exit nodes, commercial VPN tunnels, and fraudulent ASNs.
+        </p>
+        <ul class="plugin-features">
+          <li>✓ Tor exit node blacklist matching</li>
+          <li>✓ Datacenter proxy scoring</li>
+          <li>✓ ISP / ASN reputation indexing</li>
+        </ul>
+      </div>
+
+      <!-- Plugin 5 -->
+      <div class="plugin-card">
+        <div class="plugin-icon-wrap bg-amber-glow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+        </div>
+        <div class="plugin-status-badge">ADD-ON</div>
+        <h3 class="plugin-title">Impossible Travel Defense</h3>
+        <p class="plugin-desc">
+          Detects concurrent sessions across physical locations that violate maximum human travel velocity thresholds (&gt; 800 km/h).
+        </p>
+        <ul class="plugin-features">
+          <li>✓ Haversine distance-over-time check</li>
+          <li>✓ Multi-session collision detection</li>
+          <li>✓ Automated credential stuffing alerts</li>
+        </ul>
+      </div>
+
+      <!-- Plugin 6 -->
+      <div class="plugin-card">
+        <div class="plugin-icon-wrap bg-red-glow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+        </div>
+        <div class="plugin-status-badge">ADD-ON</div>
+        <h3 class="plugin-title">Bot & Automation Shield</h3>
+        <p class="plugin-desc">
+          Detects Puppeteer, Playwright, Selenium, Chrome DevTools Protocol automation hooks, and headless browser environments.
+        </p>
+        <ul class="plugin-features">
+          <li>✓ CDP runtime variable probing</li>
+          <li>✓ Mouse trajectory linearity tests</li>
+          <li>✓ WebGL driver forgery defense</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Configurable Policy Engine Section -->
+  <section id="policies" class="section container">
+    <div class="section-header">
+      <span class="section-tag">CUSTOM RULES ENGINE</span>
+      <h2 class="section-title">You Control the Business Rules</h2>
+      <p class="section-desc">
+        TrustDNA delivers intelligent scores and explainable signals. Your team decides the exact business enforcement rules through code or the dashboard.
+      </p>
+    </div>
+
+    <div class="policy-showcase-grid">
+      <div class="policy-editor-card">
+        <div class="policy-card-top">
+          <span class="policy-badge">ACTIVE POLICIES (ORGANIZATION: FINTECH_CORP)</span>
+          <span class="rule-count">4 Active Rules</span>
+        </div>
+
+        <div class="rules-list">
+          <div class="rule-item allow-rule">
+            <div class="rule-condition">
+              <span class="rule-keyword">IF</span> <span class="rule-var">risk_score</span> &gt;= <span class="rule-num">80</span>
+            </div>
+            <div class="rule-action">
+              <span class="rule-keyword">THEN</span> <span class="action-tag allow">ALLOW ACTION</span>
+            </div>
+          </div>
+
+          <div class="rule-item mfa-rule">
+            <div class="rule-condition">
+              <span class="rule-keyword">IF</span> <span class="rule-var">risk_score</span> <span class="rule-keyword">BETWEEN</span> <span class="rule-num">40</span> <span class="rule-keyword">AND</span> <span class="rule-num">79</span>
+            </div>
+            <div class="rule-action">
+              <span class="rule-keyword">THEN</span> <span class="action-tag mfa">REQUIRE STEP-UP MFA</span>
+            </div>
+          </div>
+
+          <div class="rule-item mfa-rule">
+            <div class="rule-condition">
+              <span class="rule-keyword">IF</span> <span class="rule-var">is_new_device</span> == <span class="rule-bool">true</span> <span class="rule-keyword">AND</span> <span class="rule-var">amount</span> &gt; <span class="rule-num">₦500,000</span>
+            </div>
+            <div class="rule-action">
+              <span class="rule-keyword">THEN</span> <span class="action-tag mfa">REQUIRE STEP-UP MFA</span>
+            </div>
+          </div>
+
+          <div class="rule-item block-rule">
+            <div class="rule-condition">
+              <span class="rule-keyword">IF</span> <span class="rule-var">is_tor_exit</span> == <span class="rule-bool">true</span> <span class="rule-keyword">OR</span> <span class="rule-var">impossible_travel</span> == <span class="rule-bool">true</span>
+            </div>
+            <div class="rule-action">
+              <span class="rule-keyword">THEN</span> <span class="action-tag block">BLOCK & REVOKE SESSION</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="policy-narrative-card">
+        <h3>Why Configurable Policies Matter</h3>
+        <p>
+          Unlike legacy "black box" AI vendors that force binary decisions on your application, TrustDNA empowers your risk team with full autonomy:
+        </p>
+
+        <div class="feature-bullets">
+          <div class="f-bullet">
+            <div class="f-bullet-icon">⚡</div>
+            <div>
+              <strong>Instant Rule Propagation:</strong> Edit policy thresholds in the dashboard and they apply across all your API traffic in under 5 seconds with zero server restarts.
+            </div>
+          </div>
+
+          <div class="f-bullet">
+            <div class="f-bullet-icon">🎯</div>
+            <div>
+              <strong>Explainable Audit Logs:</strong> Every decision returns the exact rule and signals that triggered the outcome for full regulatory compliance.
+            </div>
+          </div>
+
+          <div class="f-bullet">
+            <div class="f-bullet-icon">🛡️</div>
+            <div>
+              <strong>Shadow Mode Testing:</strong> Test new policy thresholds in dry-run mode against live production traffic before turning on live blocking.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zero-PII Privacy Blueprint Section -->
+  <section id="zero-pii" class="section container">
+    <div class="section-header">
+      <span class="section-tag">ZERO-PII PRIVACY BY DESIGN</span>
+      <h2 class="section-title">We Don't Want Your Customer Database</h2>
+      <p class="section-desc">
+        Never surrender sensitive user data to train third-party AI models. TrustDNA evaluates risk exclusively on opaque security features and hardware signals.
+      </p>
+    </div>
+
+    <div class="privacy-compare-grid">
+      <!-- Bad Way -->
+      <div class="privacy-card bad-card">
+        <div class="card-status-header text-red">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>
+          <span>Traditional AI Vendors (High Liability)</span>
+        </div>
+        <p class="privacy-card-sub">Demands full access to sensitive user data to train models:</p>
+        <ul class="data-list bad-list">
+          <li>❌ Full Customer Names</li>
+          <li>❌ Cleartext Email Addresses & Phone Numbers</li>
+          <li>❌ Account Passwords / PINs</li>
+          <li>❌ Bank Account Balances & Ledger History</li>
+          <li>❌ High GDPR & NDPR Compliance Risk</li>
+        </ul>
+      </div>
+
+      <!-- TrustDNA Way -->
+      <div class="privacy-card good-card">
+        <div class="card-status-header text-cyan">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>TrustDNA Zero-PII Model (Clean & Compliant)</span>
+        </div>
+        <p class="privacy-card-sub">Processes only security-relevant, non-PII telemetry:</p>
+        <ul class="data-list good-list">
+          <li>✓ Hashed Opaque User ID (e.g. <code>usr_82931</code>)</li>
+          <li>✓ One-Way Hardware & Canvas Hash</li>
+          <li>✓ Keystroke Cadence Variance & Flight Times</li>
+          <li>✓ Network IP & ASN Reputation Features</li>
+          <li>✓ 100% GDPR, NDPR & SOC2 Compliant</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="section container">
+    <div class="section-header">
+      <span class="section-tag">TRANSPARENT DEVELOPER PRICING</span>
+      <h2 class="section-title">Built to Scale With Your Application</h2>
+      <p class="section-desc">
+        Start free during development. Upgrade only as your live risk evaluation volume grows.
+      </p>
+    </div>
+
+    <!-- Interactive Pricing Slider -->
+    <div class="pricing-calculator-card">
+      <div class="calc-header">
+        <span>Estimate your monthly volume:</span>
+        <span id="calc-volume-label" class="calc-val text-cyan">25,000 risk checks / month</span>
+      </div>
+      <input type="range" id="pricing-slider" min="1000" max="250000" step="1000" value="25000" class="form-range">
+      <div class="calc-result">
+        <span>Estimated Cost: <strong id="calc-cost" class="text-emerald">$49 / month</strong> (Includes 25k evaluations + Webhooks + 3 Active Plugins)</span>
+      </div>
+    </div>
+
+    <div class="pricing-tiers-grid">
+      <!-- Tier 1 -->
+      <div class="pricing-tier-card">
+        <div class="tier-name">Developer / Starter</div>
+        <div class="tier-price">$0 <span>/ month</span></div>
+        <p class="tier-desc">Perfect for side projects, internal tools, and testing sandbox integrations.</p>
+        <ul class="tier-perks">
+          <li>✓ Up to <strong>5,000 risk checks / month</strong></li>
+          <li>✓ JavaScript Web SDK</li>
+          <li>✓ Device & Network Plugins</li>
+          <li>✓ Basic Risk Scores (0-100)</li>
+          <li>✓ Community Discord Support</li>
+        </ul>
+        <button class="btn btn-secondary btn-block get-started-btn" data-tier="Starter">Start Free</button>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="pricing-tier-card popular-tier">
+        <div class="popular-pill">MOST POPULAR</div>
+        <div class="tier-name">Growth / Fintech</div>
+        <div class="tier-price">$149 <span>/ month</span></div>
+        <p class="tier-desc">For high-growth apps needing advanced behavioral biometrics and custom policy rules.</p>
+        <ul class="tier-perks">
+          <li>✓ Up to <strong>100,000 risk checks / month</strong></li>
+          <li>✓ All 6 Modular Plugins (Behavior, Bot, Travel)</li>
+          <li>✓ Custom Policy Engine & Instant Rules</li>
+          <li>✓ Real-Time Webhook Alert Stream</li>
+          <li>✓ 99.9% Uptime SLA & Priority Support</li>
+        </ul>
+        <button class="btn btn-primary btn-block get-started-btn" data-tier="Growth">Get Started</button>
+      </div>
+
+      <!-- Tier 3 -->
+      <div class="pricing-tier-card">
+        <div class="tier-name">Enterprise / Scale</div>
+        <div class="tier-price">Custom</div>
+        <p class="tier-desc">For banks, fintechs, and high-volume platforms requiring dedicated VPCs and SLAs.</p>
+        <ul class="tier-perks">
+          <li>✓ <strong>Millions+ risk evaluations</strong></li>
+          <li>✓ Dedicated Cloud VPC or On-Prem Deployment</li>
+          <li>✓ Custom AI Model Fine-tuning</li>
+          <li>✓ 99.99% Guaranteed SLA</li>
+          <li>✓ 24/7 Dedicated Security Engineer Support</li>
+        </ul>
+        <button class="btn btn-secondary btn-block get-started-btn" data-tier="Enterprise">Contact Sales</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="section container">
+    <div class="cta-banner-card">
+      <div class="cta-content">
+        <h2>Ready to plug risk intelligence into your app?</h2>
+        <p>Get instant sandbox API keys and start testing TrustDNA in under 5 minutes.</p>
+      </div>
+      <button id="cta-sandbox-btn" class="btn btn-primary btn-lg">
+        <span>Get Your Sandbox API Key</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-col brand-col">
+        <div class="nav-brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <span class="brand-text">Trust<span class="brand-accent">DNA</span></span>
+        </div>
+        <p class="footer-tagline">
+          The programmable trust and risk intelligence layer for modern digital applications.
+        </p>
+        <div class="footer-badges">
+          <span class="f-badge">🔒 SOC2 Compliant Ready</span>
+          <span class="f-badge">🛡️ Zero-PII Architecture</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#simulator">Live Simulator</a>
+        <a href="#developers">JavaScript Web SDK</a>
+        <a href="#plugins">Modular Plugins</a>
+        <a href="#policies">Policy Engine</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Developers</h4>
+        <a href="#developers">API Reference</a>
+        <a href="#developers">SDK Documentation</a>
+        <a href="#developers">Webhook Specs</a>
+        <a href="#developers">FastAPI Integration</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Security & Legal</h4>
+        <a href="#zero-pii">Zero-PII Privacy Model</a>
+        <a href="#zero-pii">GDPR & NDPR Compliance</a>
+        <a href="#zero-pii">Sub-50ms Latency SLA</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <div>© 2026 TrustDNA Technologies, Inc. All rights reserved.</div>
+      <div class="system-status">
+        <span class="pulse-green"></span> All Systems Operational (Latency: 28ms)
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal: Instant Sandbox API Key Generator -->
+  <div id="sandbox-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="header-left">
+          <div class="brand-icon sm">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Get Instant Sandbox Access</h3>
+        </div>
+        <button id="close-modal-btn" class="btn-close">&times;</button>
+      </div>
+
+      <div class="modal-body" id="modal-form-view">
+        <p class="modal-desc">
+          Generate an instant test environment organization with sandbox API keys to start testing the TrustDNA SDK.
+        </p>
+
+        <form id="sandbox-gen-form">
+          <div class="form-field">
+            <label>Application / Company Name</label>
+            <input type="text" id="app-name-input" placeholder="e.g. Acme Pay, SwiftFintech" required class="text-input" value="My Awesome Fintech">
+          </div>
+
+          <div class="form-field">
+            <label>Developer Email</label>
+            <input type="email" id="dev-email-input" placeholder="dev@company.com" required class="text-input" value="developer@example.com">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            <span>Generate Sandbox API Keys</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Modal Key Generated View -->
+      <div class="modal-body hidden" id="modal-keys-view">
+        <div class="success-banner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Sandbox Environment Ready!</span>
+        </div>
+
+        <div class="key-box">
+          <label>Publishable Client Key (For Frontend Web SDK):</label>
+          <div class="key-input-row">
+            <input type="text" readonly id="gen-pub-key" class="key-input" value="td_pub_test_9a8f4c2e11894d2a">
+            <button class="btn-copy-key" data-target="gen-pub-key">Copy</button>
+          </div>
+        </div>
+
+        <div class="key-box">
+          <label>Secret API Key (For Backend Risk Evaluation):</label>
+          <div class="key-input-row">
+            <input type="text" readonly id="gen-sec-key" class="key-input" value="td_sec_test_7f2b1d9c4e098a5e">
+            <button class="btn-copy-key" data-target="gen-sec-key">Copy</button>
+          </div>
+        </div>
+
+        <div class="modal-instructions">
+          <strong>Quick start:</strong> Copy these keys into your local development environment. Head over to the <a href="#developers" id="jump-to-docs-btn">Quickstart Code Snippets</a>.
+        </div>
+
+        <button id="done-modal-btn" class="btn btn-secondary btn-block">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
