@@ -35,6 +35,20 @@ python -m http.server 5173
 ```
 Open **[http://localhost:5173](http://localhost:5173)** in your browser to experience the live simulator!
 
+### 2. Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/DamaMichaelYohanna/trustDNA)
+
+#### Option A: One-Click Deploy
+Click the **Deploy with Vercel** button above to fork and deploy instantly.
+
+#### Option B: Vercel CLI
+```bash
+npm install -g vercel
+vercel
+```
+Vercel will automatically detect `vercel.json` and deploy your project with the optimized Vite build output (`dist/`).
+
 ---
 
 ## 💻 30-Second Integration Example
