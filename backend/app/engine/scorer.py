@@ -28,9 +28,19 @@ def evaluate_risk(request: RiskEvaluationRequest) -> RiskEvaluationResponse:
         else:
             reasons.append(ReasonTag(text="invalid_or_expired_telemetry_token", type="warning"))
 
+    # Extract structured token features if available
+    device_obj = token_features.get("device", {}) if isinstance(token_features.get("device"), dict) else {}
+    network_obj = token_features.get("network", {}) if isinstance(token_features.get("network"), dict) else {}
+    travel_obj = token_features.get("travel", {}) if isinstance(token_features.get("travel"), dict) else {}
+    behavior_obj = token_features.get("behavior", {}) if isinstance(token_features.get("behavior"), dict) else {}
+
     # 1. Device Evaluation
-    device_profile = request.device.profile
-    if token_features.get("webdriver", False):
+    device_profile = device_obj.get("profile") or getattr(request.device, "profile", "known_trusted")
+    is_headless = device_obj.get("is_headless", getattr(request.device, "is_headless", False)) or token_features.get("webdriver", False)
+    is_rooted = device_obj.get("is_rooted", getattr(request.device, "is_rooted_or_jailbroken", False))
+
+
+    if is_headless:
         device_score = 10
         reasons.append(ReasonTag(text="headless_browser_automation_detected", type="danger"))
     elif device_profile == "known_trusted":
@@ -39,7 +49,7 @@ def evaluate_risk(request: RiskEvaluationRequest) -> RiskEvaluationResponse:
     elif device_profile == "new_fingerprint":
         device_score = 60
         reasons.append(ReasonTag(text="new_device_fingerprint", type="warning"))
-    elif device_profile == "emulated_rooted" or request.device.is_rooted_or_jailbroken:
+    elif device_profile == "emulated_rooted" or is_rooted:
         device_score = 15
         reasons.append(ReasonTag(text="emulated_or_rooted_environment", type="danger"))
     else:
@@ -47,14 +57,16 @@ def evaluate_risk(request: RiskEvaluationRequest) -> RiskEvaluationResponse:
         reasons.append(ReasonTag(text="unverified_device_entropy", type="warning"))
 
     # 2. Network Evaluation
+    network_type = network_obj.get("type") or request.network.type
+    network_ip = network_obj.get("ip") or request.network.ip_address
     network_score, net_reasons = evaluate_network(
-        request.network.type,
-        request.network.ip_address
+        network_type,
+        network_ip
     )
     reasons.extend(net_reasons)
 
     # 3. Impossible Travel Evaluation
-    travel_km = request.travel.distance_km
+    travel_km = travel_obj.get("distance_km") if travel_obj.get("distance_km") is not None else request.travel.distance_km
     time_delta = request.travel.time_delta_hours or 1.0
 
     # If explicit coordinates are provided, recalculate distance
@@ -81,7 +93,7 @@ def evaluate_risk(request: RiskEvaluationRequest) -> RiskEvaluationResponse:
         ))
 
     # 4. Behavioral Biometrics Evaluation
-    behavior_profile = request.behavior.typing_profile
+    behavior_profile = behavior_obj.get("typing_profile") or request.behavior.typing_profile
 
     # If client token has real collected keystroke cadence, evaluate mathematical variance
     if "flight_std_ms" in token_features:
@@ -111,6 +123,7 @@ def evaluate_risk(request: RiskEvaluationRequest) -> RiskEvaluationResponse:
     else:
         behavior_score = 75
         reasons.append(ReasonTag(text="baseline_behavioral_telemetry", type="success"))
+
 
     # 5. Transaction & Velocity Evaluation
     amount = request.transaction.amount
@@ -148,7 +161,7 @@ def evaluate_risk(request: RiskEvaluationRequest) -> RiskEvaluationResponse:
     # 7. Hard Override Security Constraints
     hard_override_triggered = False
     if (
-        request.network.type == "tor_exit"
+        network_type == "tor_exit"
         or (device_profile == "emulated_rooted" and amount > 500000)
         or travel_km > 2000
         or attempt_count > 10

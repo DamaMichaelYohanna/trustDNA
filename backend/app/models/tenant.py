@@ -22,6 +22,9 @@ class TenantPolicySettings(BaseModel):
     bot_cadence_enabled: bool = True
     touch_biometrics_enabled: bool = True
     velocity_spike_enabled: bool = True
+    webhook_url: Optional[str] = None
+    webhook_secret: Optional[str] = None
+
 
 
 class TenantMetrics(BaseModel):

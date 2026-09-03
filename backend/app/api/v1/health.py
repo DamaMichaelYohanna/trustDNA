@@ -32,8 +32,9 @@ async def health_check():
         engine="TrustDNA Heuristic Rule Engine (Stage 2 Multi-Tenant)",
         velocity_store=store_type,
         total_audited_decisions=audit_logger.total_logged,
-        active_tenants=len(tenant_engine.tenants)
+        active_tenants=len(tenant_engine.list_all_tenants())
     )
+
 
 
 @router.get("/audit/recent")

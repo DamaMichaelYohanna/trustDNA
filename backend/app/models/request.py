@@ -16,6 +16,11 @@ class DeviceTelemetry(BaseModel):
         default=False,
         description="Device integrity status."
     )
+    is_headless: bool = Field(
+        default=False,
+        description="Headless browser or emulator status."
+    )
+
 
 
 class NetworkTelemetry(BaseModel):

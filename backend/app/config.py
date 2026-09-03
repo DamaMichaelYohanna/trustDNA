@@ -1,4 +1,5 @@
 """Configuration and threshold definitions for TrustDNA Risk Engine."""
+import os
 from pydantic import BaseModel
 
 
@@ -23,10 +24,17 @@ class Settings(BaseModel):
     weights: RiskWeights = RiskWeights()
     thresholds: DecisionThresholds = DecisionThresholds()
     
+    # Database Configuration (Defaults to SQLite; easily swapped to PostgreSQL via env var)
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./trustdna.db")
+    
     # High-Throughput & Database Bottleneck Prevention Settings
-    redis_url: str | None = None  # e.g., "redis://localhost:6379/0" for distributed multi-worker setups
+    redis_url: str | None = os.getenv("REDIS_URL", None)
     max_in_memory_entities: int = 50000  # Hard memory ceiling to prevent unbounded RAM leaks
     enable_background_audit_logging: bool = True
+    
+    # Webhooks & Outbound Dispatching
+    webhook_timeout_seconds: float = 3.0
+    webhook_max_retries: int = 2
 
 
 settings = Settings()

@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. TrustDNA Core Risk Intelligence Engine (FastAPI + Gunicorn)
+  # ----------------------------------------------------------------------------
+  trustdna-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trustdna-api
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-trustdna_secure_pass}@postgres:5432/${POSTGRES_DB:-trustdna}
+      - REDIS_URL=redis://redis:6379/0
+      - TOKEN_SECRET=${TOKEN_SECRET:-trustdna_telemetry_signing_secret_key_v1}
+      - WORKERS=${WORKERS:-4}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - trustdna-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # ----------------------------------------------------------------------------
+  # 2. PostgreSQL 16 Relational Database (Persistent Storage)
+  # ----------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: trustdna-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-trustdna_secure_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-trustdna}
+    volumes:
+      - trustdna_pgdata:/var/lib/postgresql/data
+    networks:
+      - trustdna-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-trustdna}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ----------------------------------------------------------------------------
+  # 3. Redis 7 High-Speed Velocity Cache
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: trustdna-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - trustdna_redisdata:/data
+    networks:
+      - trustdna-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ----------------------------------------------------------------------------
+  # 4. Nginx Reverse Proxy, Static Web Host & CDN Edge
+  # ----------------------------------------------------------------------------
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: trustdna-nginx
+    restart: unless-stopped
+    ports:
+      - "${PORT:-80}:80"
+    volumes:
+      - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - .:/usr/share/nginx/html:ro
+    depends_on:
+      - trustdna-api
+    networks:
+      - trustdna-network
+
+networks:
+  trustdna-network:
+    driver: bridge
+
+volumes:
+  trustdna_pgdata:
+    driver: local
+  trustdna_redisdata:
+    driver: local

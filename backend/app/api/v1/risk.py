@@ -1,4 +1,4 @@
-"""Real-time risk assessment, key attribution, and sandbox generator endpoints."""
+"""Real-time risk assessment, key attribution, webhook dispatching, and sandbox generator endpoints."""
 import time
 import secrets
 from typing import Optional
@@ -9,6 +9,7 @@ from ...models.response import RiskEvaluationResponse
 from ...engine.scorer import evaluate_risk
 from ...engine.audit import audit_logger
 from ...engine.tenants import tenant_engine
+from ...engine.webhooks import dispatch_webhook_event
 from ...config import settings
 
 router = APIRouter(tags=["Risk Evaluation"])
@@ -40,8 +41,8 @@ def evaluate_transaction_risk(
     Ingests opaque telemetry across device, network, travel, behavior, and transaction vectors.
     Returns composite score, actionable decision (ALLOW / CHALLENGE / BLOCK), and reason codes in < 1ms.
     
-    Multi-Tenant Key Attribution:
-    Automatically identifies calling tenant organization and logs metrics directly to their dashboard.
+    Multi-Tenant Key Attribution & Webhook Dispatching:
+    Automatically attributes evaluations to client organizations and triggers signed webhooks.
     """
     passed_key = x_trustdna_key or authorization or x_publishable_key
     tenant_match = tenant_engine.identify_tenant_by_key(passed_key)
@@ -50,7 +51,7 @@ def evaluate_transaction_risk(
 
     # Attribution to calling tenant
     if tenant_match:
-        tenant_id, _ = tenant_match
+        tenant_id, tenant_settings = tenant_match
         tenant_engine.record_decision(
             tenant_id,
             {
@@ -63,6 +64,25 @@ def evaluate_transaction_risk(
                 "currency": payload.transaction.currency
             }
         )
+
+        # Dispatch outbound signed webhook if configured
+        if tenant_settings and tenant_settings.webhook_url:
+            background_tasks.add_task(
+                dispatch_webhook_event,
+                webhook_url=tenant_settings.webhook_url,
+                webhook_secret=tenant_settings.webhook_secret,
+                event_type=f"risk.{decision_result.decision.lower()}",
+                tenant_id=tenant_id,
+                event_data={
+                    "customer_id": decision_result.customer_id,
+                    "trust_score": decision_result.trust_score,
+                    "decision": decision_result.decision,
+                    "latency_ms": decision_result.latency_ms,
+                    "reasons": decision_result.reasons,
+                    "amount": payload.transaction.amount,
+                    "currency": payload.transaction.currency
+                }
+            )
 
     # Decouple persistent audit write from client response path
     if settings.enable_background_audit_logging:
