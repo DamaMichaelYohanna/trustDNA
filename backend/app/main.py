@@ -7,7 +7,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 from .config import settings
-from .api.routes import router
+from .api.v1 import api_v1_router
 
 app = FastAPI(
     title=settings.app_name,
@@ -43,7 +43,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router)
+app.include_router(api_v1_router, prefix="/api/v1")
+
 
 
 @app.get("/")

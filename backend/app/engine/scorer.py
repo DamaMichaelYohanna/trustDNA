@@ -177,13 +177,15 @@ def evaluate_risk(request: RiskEvaluationRequest) -> RiskEvaluationResponse:
     # Execution Latency calculation
     elapsed_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
 
+    uid = request.customer_id or request.user_id or "usr_anonymous"
+
     # 9. Asynchronously queue feature vector for ML Model Training
     if token_features:
         training_pipeline.record_feature_vector(
             features=token_features,
             decision=decision,
             trust_score=composite_score,
-            client_id=request.user_id or "usr_anonymous"
+            client_id=uid
         )
 
     return RiskEvaluationResponse(
@@ -191,8 +193,9 @@ def evaluate_risk(request: RiskEvaluationRequest) -> RiskEvaluationResponse:
         decision=decision,
         risk_level=risk_level,
         latency_ms=elapsed_ms,
-        customer_id=request.user_id or "usr_anonymous",
+        customer_id=uid,
         reasons=[r.text for r in reasons],
+
         reason_details=reasons,
         module_scores=ModuleScores(
             device=device_score,

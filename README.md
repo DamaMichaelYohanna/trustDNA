@@ -24,30 +24,30 @@ TrustDNA is a plug-in risk intelligence infrastructure layer that evaluates whet
 
 ## 🚀 Quickstart
 
-### 1. Run the Interactive Showcase Locally
+### 1. Start the Python Risk Engine Backend (FastAPI)
 ```bash
-# Clone the repository
-git clone https://github.com/DamaMichaelYohanna/trustDNA.git
-cd trustDNA
+cd backend
+pip install -r requirements.txt
 
-# Start local server
+# Run automated unit test suite
+pytest tests/test_engine.py -v
+
+# Start FastAPI server on port 8000
+python -m uvicorn app.main:app --reload --port 8000
+```
+Interactive Swagger API documentation is immediately available at **[http://localhost:8000/docs](http://localhost:8000/docs)**.
+
+### 2. Run the Interactive Showcase Frontend
+```bash
+# In the root trustDNA directory:
 python -m http.server 5173
 ```
-Open **[http://localhost:5173](http://localhost:5173)** in your browser to experience the live simulator!
+Open **[http://localhost:5173](http://localhost:5173)** in your browser! The simulator will automatically detect the running Python backend and show:
+`● Python API Active`.
 
-### 2. Deploy to Vercel
-
+### 3. Deploy to Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/DamaMichaelYohanna/trustDNA)
-
-#### Option A: One-Click Deploy
-Click the **Deploy with Vercel** button above to fork and deploy instantly.
-
-#### Option B: Vercel CLI
-```bash
-npm install -g vercel
-vercel
-```
-Vercel will automatically detect `vercel.json` and deploy your project with the optimized Vite build output (`dist/`).
+Vercel automatically detects `vercel.json` and deploys the showcase frontend.
 
 ---
 

@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustDNA Security Platform | Enterprise Fraud & Risk Intelligence</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/></svg>">
+  <style>
+    /* Auth View Specific Styles */
+    .auth-fullscreen {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-app);
+      padding: 20px;
+    }
+    .auth-box {
+      width: 100%;
+      max-width: 400px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-header {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 24px;
+      text-align: center;
+      align-items: center;
+    }
+    .auth-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 20px;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 8px 0;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .auth-tab-btn.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. AUTHENTICATION SCREEN (Shown when logged out)
+       ========================================================================= -->
+  <div id="view-auth" class="auth-fullscreen">
+    <div class="auth-box">
+      <div class="auth-header">
+        <div class="auth-brand">
+          <div class="brand-logo-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <span class="brand-title">Trust<span>DNA</span></span>
+        </div>
+        <h2 style="font-size: 16px; font-weight: 600;">Enterprise Security Portal</h2>
+        <p style="font-size: 12px; color: var(--text-muted);">Sign in to access your risk intelligence workspace</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="tab-login-btn">Sign In</button>
+        <button class="auth-tab-btn" id="tab-register-btn">Register Organization</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="form-login">
+        <div class="form-group">
+          <label class="form-label">Administrator Email</label>
+          <input type="email" id="login-email" required class="form-input" placeholder="security@company.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="login-password" required class="form-input" placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 14px;">
+          <span>Sign In to Console</span>
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" style="display: none;">
+        <div class="form-group">
+          <label class="form-label">Organization / Company Name</label>
+          <input type="text" id="reg-name" required class="form-input" placeholder="e.g. Apex FinTech Solutions">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Admin Developer Email</label>
+          <input type="email" id="reg-email" required class="form-input" placeholder="admin@company.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="reg-password" required class="form-input" placeholder="••••••••">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Industry Sector</label>
+          <select id="reg-industry" class="form-select">
+            <option value="Fintech & Payments">Fintech & Payments</option>
+            <option value="Banking & Digital Wallet">Banking & Digital Wallet</option>
+            <option value="E-Commerce & Retail">E-Commerce & Retail</option>
+            <option value="Healthcare & Telemedicine">Healthcare & Telemedicine</option>
+            <option value="Gaming & Virtual Goods">Gaming & Virtual Goods</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 14px;">
+          <span>Create Organization & Generate Keys</span>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="index.html" style="font-size: 12px; color: var(--text-muted); text-decoration: none;">← Back to TrustDNA Overview</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. AUTHENTICATED ENTERPRISE WORKSPACE (Shown when logged in)
+       ========================================================================= -->
+  <div id="view-dashboard" class="app-wrapper" style="display: none;">
+    
+    <!-- FIXED LEFT SIDEBAR (240px) -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="#dashboard" class="brand-container">
+          <div class="brand-logo-icon">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <span class="brand-title">Trust<span>DNA</span></span>
+        </a>
+        <button class="env-pill-btn" id="btn-env-toggle" title="Switch Environment">
+          <span class="status-dot warning"></span>
+          <span>SANDBOX</span>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- Section: Overview -->
+        <div class="nav-section-title">Overview</div>
+        <div class="nav-group">
+          <div class="nav-item active" data-view="overview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            <span>Dashboard</span>
+          </div>
+        </div>
+
+        <!-- Section: Security -->
+        <div class="nav-section-title">Security & Intelligence</div>
+        <div class="nav-group">
+          <div class="nav-item" data-view="events">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Risk Events</span>
+            <span class="nav-counter alert" id="nav-badge-events">0</span>
+          </div>
+          <div class="nav-item" data-view="transactions">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+            <span>Transactions</span>
+          </div>
+          <div class="nav-item" data-view="devices">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+            <span>Devices</span>
+          </div>
+          <div class="nav-item" data-view="users">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Users</span>
+          </div>
+        </div>
+
+        <!-- Section: Developer -->
+        <div class="nav-section-title">Developer</div>
+        <div class="nav-group">
+          <div class="nav-item" data-view="keys">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>API Keys</span>
+          </div>
+          <div class="nav-item" data-view="sdk">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span>SDKs & Quickstart</span>
+          </div>
+          <div class="nav-item" data-view="webhooks">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span>Webhooks</span>
+          </div>
+        </div>
+
+        <!-- Section: Management -->
+        <div class="nav-section-title">Management</div>
+        <div class="nav-group">
+          <div class="nav-item" data-view="policy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Policy & Thresholds</span>
+          </div>
+          <div class="nav-item" data-view="organization">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 7V3h12v4M9 11h.01M9 15h.01M15 11h.01M15 15h.01"/></svg>
+            <span>Organization</span>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Sidebar User Footer -->
+      <div class="sidebar-footer">
+        <div class="user-profile-wrap">
+          <div class="user-avatar-sm" id="user-avatar">A</div>
+          <div class="user-meta-sm">
+            <span class="user-meta-org" id="nav-org-name">My Organization</span>
+            <span class="user-meta-email" id="nav-user-email">admin@company.com</span>
+          </div>
+        </div>
+        <button class="btn-sidebar-signout" id="btn-logout" title="Sign Out">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEWPORT -->
+    <main class="main-viewport">
+      
+      <!-- Top Application Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <div class="breadcrumbs">
+            <span>TrustDNA</span>
+            <span class="crumb-sep">/</span>
+            <span>Security</span>
+            <span class="crumb-sep">/</span>
+            <span class="crumb-current" id="header-breadcrumb-title">Dashboard Overview</span>
+          </div>
+        </div>
+
+        <div class="header-search-wrap">
+          <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/>
+          </svg>
+          <input type="text" id="global-search-input" class="header-search-input" placeholder="Search users, transactions, device IDs...">
+          <span class="search-kbd-hint">⌘K</span>
+        </div>
+
+        <div class="header-right">
+          <div class="system-status-indicator">
+            <span class="status-dot online"></span>
+            <span>Engine Protected (0.38ms)</span>
+          </div>
+
+          <button id="btn-simulate-event" class="btn btn-primary btn-sm">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Simulate Risk Event</span>
+          </button>
+
+          <a href="demo/checkout.html" target="_blank" class="btn btn-outline btn-sm">
+            <span>Checkout Demo ↗</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- VIEWPORT CONTENT BODY -->
+      <div class="viewport-content">
+
+        <!-- ===================================================================
+             VIEW 1: DASHBOARD OVERVIEW
+             =================================================================== -->
+        <section id="pane-overview" class="view-pane active">
+          <!-- KPI Metrics Row -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <span class="kpi-label">Sessions Analyzed</span>
+              <div class="kpi-value-row">
+                <span class="kpi-value" id="kpi-total-evals">0</span>
+              </div>
+              <span class="kpi-subtext">Real-time opaque telemetry evaluations</span>
+            </div>
+
+            <div class="kpi-card">
+              <span class="kpi-label">Instant Low-Risk Rate</span>
+              <div class="kpi-value-row">
+                <span class="kpi-value" id="kpi-allow-rate">100.0%</span>
+              </div>
+              <span class="kpi-subtext positive">Approved with zero friction</span>
+            </div>
+
+            <div class="kpi-card">
+              <span class="kpi-label">MFA Step-Up Challenges</span>
+              <div class="kpi-value-row">
+                <span class="kpi-value" id="kpi-challenge-rate">0.0%</span>
+              </div>
+              <span class="kpi-subtext">Biometric or OTP prompts</span>
+            </div>
+
+            <div class="kpi-card">
+              <span class="kpi-label">High-Risk Fraud Blocks</span>
+              <div class="kpi-value-row">
+                <span class="kpi-value" id="kpi-block-rate">0.0%</span>
+              </div>
+              <span class="kpi-subtext negative">Bots & impossible travel blocked</span>
+            </div>
+
+            <div class="kpi-card">
+              <span class="kpi-label">P99 Server Latency</span>
+              <div class="kpi-value-row">
+                <span class="kpi-value" id="kpi-avg-lat">0.38ms</span>
+              </div>
+              <span class="kpi-subtext">Sub-millisecond pipeline</span>
+            </div>
+          </div>
+
+          <!-- Risk Activity Time-Series Chart -->
+          <div class="chart-card" style="margin-top: 18px;">
+            <div class="chart-header">
+              <div>
+                <h3 class="card-heading">Security Risk Activity (Last 24 Hours)</h3>
+                <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Distribution of low-risk, step-up challenges, and high-risk threat blocks.</p>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <span class="legend-color-dot legend-low"></span>
+                  <span>Low Risk (Allow)</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color-dot legend-med"></span>
+                  <span>Medium Risk (MFA)</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color-dot legend-high"></span>
+                  <span>High Risk (Block)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="canvas-chart-wrap">
+              <canvas id="risk-timeseries-canvas" class="timeseries-canvas"></canvas>
+            </div>
+          </div>
+
+          <!-- Recent Risk Events Table -->
+          <div class="card" style="margin-top: 18px;">
+            <div class="card-header">
+              <div>
+                <h3 class="card-heading">Recent Risk Events</h3>
+                <p style="font-size: 11.5px; color: var(--text-muted);">Real-time stream of security decisions evaluated across your applications.</p>
+              </div>
+              <button class="btn btn-outline btn-sm" id="btn-refresh-overview-events">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                <span>Refresh Stream</span>
+              </button>
+            </div>
+
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>User ID</th>
+                    <th>Event Type</th>
+                    <th>Nominal Amount</th>
+                    <th>Trust Score</th>
+                    <th>Risk Level</th>
+                    <th>Latency</th>
+                    <th>Triggered Reasons</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="overview-events-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 2: RISK EVENTS OPS PAGE
+             =================================================================== -->
+        <section id="pane-events" class="view-pane" style="display: none;">
+          <div class="filter-toolbar">
+            <div class="filter-group">
+              <input type="text" id="filter-events-search" class="form-input" placeholder="Filter by user ID, event, reason..." style="width: 260px;">
+              <select id="filter-events-risk" class="form-select" style="width: 140px;">
+                <option value="all">All Risk Levels</option>
+                <option value="high">High Risk (Block)</option>
+                <option value="challenge">Medium Risk (MFA)</option>
+                <option value="allow">Low Risk (Allow)</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <button class="btn btn-secondary btn-sm" id="btn-export-events-csv">Export CSV</button>
+            </div>
+          </div>
+
+          <div class="table-container" style="margin-top: 14px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>User / Customer</th>
+                  <th>Event Type</th>
+                  <th>Amount</th>
+                  <th>Trust Score</th>
+                  <th>Risk Level</th>
+                  <th>Primary Reason</th>
+                  <th class="text-right">Investigation</th>
+                </tr>
+              </thead>
+              <tbody id="events-full-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 3: TRANSACTIONS MONITORING
+             =================================================================== -->
+        <section id="pane-transactions" class="view-pane" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-heading">Financial Fraud & Transaction Monitor</h3>
+              <span class="badge badge-info">Real-time Scoring</span>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Transaction ID</th>
+                    <th>User ID</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Trust Score</th>
+                    <th>Decision</th>
+                    <th>Status</th>
+                    <th class="text-right">Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="transactions-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 4: DEVICES INTELLIGENCE
+             =================================================================== -->
+        <section id="pane-devices" class="view-pane" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-heading">Device Fingerprint & Hardware Entropy Registry</h3>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Device ID</th>
+                    <th>Associated User</th>
+                    <th>Device Type</th>
+                    <th>Browser / OS</th>
+                    <th>Trust Status</th>
+                    <th>Hardware Entropy</th>
+                    <th class="text-right">Last Active</th>
+                  </tr>
+                </thead>
+                <tbody id="devices-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 5: USERS INTELLIGENCE
+             =================================================================== -->
+        <section id="pane-users" class="view-pane" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-heading">User Identity & Behavioral Baseline Profiles</h3>
+            </div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Customer ID</th>
+                    <th>Trust Score Baseline</th>
+                    <th>Risk Profile</th>
+                    <th>Linked Devices</th>
+                    <th>Typical Location</th>
+                    <th class="text-right">Last Evaluation</th>
+                  </tr>
+                </thead>
+                <tbody id="users-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 6: API KEYS MANAGEMENT
+             =================================================================== -->
+        <section id="pane-keys" class="view-pane" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-heading">API Credentials & Key Pairs</h3>
+                <p style="font-size: 11.5px; color: var(--text-muted);">Use publishable keys in client JavaScript collectors and secret keys strictly on your backend servers.</p>
+              </div>
+              <button id="btn-open-create-key-modal" class="btn btn-primary btn-sm">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>Create Key Pair</span>
+              </button>
+            </div>
+
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Key Name & ID</th>
+                    <th>Environment</th>
+                    <th>Publishable Client Key</th>
+                    <th>Secret Backend Key</th>
+                    <th>Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="api-keys-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 7: SDK QUICKSTART
+             =================================================================== -->
+        <section id="pane-sdk" class="view-pane" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-heading">Developer Integration Guide</h3>
+                <p style="font-size: 11.5px; color: var(--text-muted);">Integrate real-time fraud scoring in under 15 minutes.</p>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+              <div>
+                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: 6px;">1. Client-Side Telemetry Collector (HTML / React / Vue)</h4>
+                <div class="code-box">
+&lt;script src="http://localhost:8000/v1/trustdna.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  const trustdna = TrustDNA.init({
+    publishableKey: '<span id="snippet-pub-key" style="color: #60a5fa;">td_pub_test_...</span>'
+  });
+
+  // Attach token to form submit or API payload
+  const token = await trustdna.getTelemetryToken();
+&lt;/script&gt;
+                </div>
+              </div>
+
+              <div>
+                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: 6px;">2. Backend Risk Decision (Python)</h4>
+                <div class="code-box">
+import trustdna
+
+client = trustdna.TrustDNAClient(secret_key="<span id="snippet-sec-key" style="color: #34d399;">td_sec_test_...</span>")
+
+decision = client.risk.evaluate(
+    customer_id="usr_82931",
+    telemetry_token=request.form["td_token"],
+    amount=1500.0,
+    currency="USD"
+)
+
+if decision.decision == "block":
+    raise PermissionDenied("Transaction blocked by TrustDNA")
+                </div>
+              </div>
+
+              <div>
+                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: 6px;">3. Backend Risk Decision (Node.js)</h4>
+                <div class="code-box">
+const TrustDNA = require('@trustdna/node');
+
+const client = new TrustDNA({
+  secretKey: '<span id="snippet-sec-key-node" style="color: #34d399;">td_sec_test_...</span>'
+});
+
+const decision = await client.risk.evaluate({
+  customerId: 'usr_82931',
+  telemetryToken: req.body.td_token,
+  amount: 1500.0,
+  currency: 'USD'
+});
+
+if (decision.decision === 'block') {
+  return res.status(403).json({ error: 'Transaction rejected by TrustDNA' });
+}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 8: POLICY & SCORE THRESHOLDS
+             =================================================================== -->
+        <section id="pane-policy" class="view-pane" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-heading">Risk Policy & Decision Engine Rules</h3>
+                <p style="font-size: 11.5px; color: var(--text-muted);">Calibrate mathematical risk score floors and automated challenge boundaries.</p>
+              </div>
+              <button id="btn-save-policy" class="btn btn-primary btn-sm">Save Policy Settings</button>
+            </div>
+
+            <div class="settings-section-grid">
+              <div class="settings-meta-col">
+                <h3>Decision Floors</h3>
+                <p>Trust scores range from 0 to 100. Configure when transactions are approved or challenged.</p>
+              </div>
+              <div class="settings-controls-col">
+                <div class="slider-card">
+                  <div class="slider-header-row">
+                    <span style="font-size: 12px; font-weight: 600;">Instant Allow Threshold</span>
+                    <span class="slider-val-badge" id="disp-allow-val">70+</span>
+                  </div>
+                  <p style="font-size: 11.5px; color: var(--text-muted);">Scores at or above this value pass with zero user friction.</p>
+                  <input type="range" id="policy-allow-slider" min="50" max="95" value="70" class="enterprise-slider">
+                </div>
+
+                <div class="slider-card">
+                  <div class="slider-header-row">
+                    <span style="font-size: 12px; font-weight: 600;">MFA Step-Up Challenge Floor</span>
+                    <span class="slider-val-badge" id="disp-mfa-val">40 - 69</span>
+                  </div>
+                  <p style="font-size: 11.5px; color: var(--text-muted);">Scores in this intermediate bracket prompt additional verification.</p>
+                  <input type="range" id="policy-mfa-slider" min="20" max="60" value="40" class="enterprise-slider">
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section-grid">
+              <div class="settings-meta-col">
+                <h3>Security Rule Plugins</h3>
+                <p>Enable or disable specialized threat detection heuristics.</p>
+              </div>
+              <div class="settings-controls-col">
+                <label class="toggle-item-row">
+                  <input type="checkbox" id="toggle-impossible-travel" checked class="toggle-checkbox">
+                  <div class="toggle-label-wrap">
+                    <strong>Impossible Travel Velocity Check</strong>
+                    <span>Flag consecutive sessions exceeding 2,000 km/h physical movement speed delta.</span>
+                  </div>
+                </label>
+
+                <label class="toggle-item-row">
+                  <input type="checkbox" id="toggle-bot-cadence" checked class="toggle-checkbox">
+                  <div class="toggle-label-wrap">
+                    <strong>Keystroke Bot Cadence & Zero-Flight-Time Filter</strong>
+                    <span>Detect automated script injections with sub-1ms key intervals.</span>
+                  </div>
+                </label>
+
+                <label class="toggle-item-row">
+                  <input type="checkbox" id="toggle-touch-biometrics" checked class="toggle-checkbox">
+                  <div class="toggle-label-wrap">
+                    <strong>Touch Dynamics & Swipe Curve Velocity</strong>
+                    <span>Assess natural mobile swipe velocity and touch duration.</span>
+                  </div>
+                </label>
+
+                <label class="toggle-item-row">
+                  <input type="checkbox" id="toggle-velocity-spikes" checked class="toggle-checkbox">
+                  <div class="toggle-label-wrap">
+                    <strong>Sliding-Window Transaction Burst Limits</strong>
+                    <span>Detect abnormal transaction frequencies on individual accounts within 10-minute windows.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             VIEW 9: ORGANIZATION SETTINGS
+             =================================================================== -->
+        <section id="pane-organization" class="view-pane" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-heading">Organization Profile</h3>
+            </div>
+            <div class="settings-section-grid">
+              <div class="settings-meta-col">
+                <h3>Account Metadata</h3>
+                <p>Organization credentials and plan status.</p>
+              </div>
+              <div class="settings-controls-col">
+                <div class="form-group">
+                  <label class="form-label">Organization ID</label>
+                  <input type="text" id="meta-tenant-id" readonly class="form-input form-input-mono" value="org_...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Admin Email</label>
+                  <input type="text" id="meta-tenant-email" readonly class="form-input" value="admin@...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Industry Sector</label>
+                  <input type="text" id="meta-tenant-industry" readonly class="form-input" value="Fintech">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- =========================================================================
+       3. SLIDE-OUT FORENSIC EVENT INVESTIGATION DRAWER
+       ========================================================================= -->
+  <div id="drawer-backdrop" class="drawer-backdrop"></div>
+  <aside id="investigation-drawer" class="investigation-drawer">
+    <div class="drawer-header">
+      <div class="drawer-header-left">
+        <span class="drawer-event-id" id="drawer-event-id">EVT_82931</span>
+        <span class="drawer-timestamp" id="drawer-event-timestamp">10:42:15 AM • 2 minutes ago</span>
+      </div>
+      <button id="btn-close-drawer" class="modal-close-btn">&times;</button>
+    </div>
+
+    <div class="drawer-body">
+      <!-- Assessment Strip -->
+      <div class="assessment-strip">
+        <div>
+          <span style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Calculated Trust Score</span>
+          <div class="assessment-score-wrap">
+            <span class="assessment-score-val" id="drawer-score-val">24</span>
+            <span class="assessment-score-max">/ 100</span>
+          </div>
+        </div>
+        <div id="drawer-decision-badge-wrap">
+          <span class="badge badge-high" id="drawer-decision-badge">HIGH RISK (BLOCK)</span>
+        </div>
+      </div>
+
+      <!-- Structured Evidence Decomposition -->
+      <div>
+        <div class="evidence-section-title">Structured Evidence & Signals</div>
+        <div class="evidence-grid">
+          
+          <!-- Evidence: Device -->
+          <div class="evidence-card" id="ev-card-device">
+            <div class="evidence-header">
+              <span class="evidence-tag">DEVICE PROFILE</span>
+              <span class="badge badge-low" id="ev-badge-device">Trusted</span>
+            </div>
+            <div class="evidence-detail-row">
+              <span class="evidence-primary-text" id="ev-primary-device">Pixel 8 (Android 14)</span>
+              <span class="evidence-secondary-text" id="ev-sub-device">Entropy: 94.2%</span>
+            </div>
+            <span class="evidence-secondary-text" id="ev-desc-device">Known device fingerprint matches historical baseline.</span>
+          </div>
+
+          <!-- Evidence: Geo-Velocity -->
+          <div class="evidence-card" id="ev-card-travel">
+            <div class="evidence-header">
+              <span class="evidence-tag">GEO-VELOCITY / TRAVEL</span>
+              <span class="badge badge-low" id="ev-badge-travel">Normal</span>
+            </div>
+            <div class="evidence-detail-row">
+              <span class="evidence-primary-text" id="ev-primary-travel">Lagos, Nigeria</span>
+              <span class="evidence-secondary-text" id="ev-sub-travel">Velocity: 14 km/h</span>
+            </div>
+            <span class="evidence-secondary-text" id="ev-desc-travel">Speed delta within standard physical human travel parameters.</span>
+          </div>
+
+          <!-- Evidence: Financial Transaction -->
+          <div class="evidence-card" id="ev-card-transaction">
+            <div class="evidence-header">
+              <span class="evidence-tag">TRANSACTION ANOMALY</span>
+              <span class="badge badge-low" id="ev-badge-transaction">Normal</span>
+            </div>
+            <div class="evidence-detail-row">
+              <span class="evidence-primary-text" id="ev-primary-transaction">₦15,000.00</span>
+              <span class="evidence-secondary-text" id="ev-sub-transaction">Baseline: ₦10k - ₦50k</span>
+            </div>
+            <span class="evidence-secondary-text" id="ev-desc-transaction">Nominal amount aligns with account median volume.</span>
+          </div>
+
+          <!-- Evidence: Behavioral Biometrics -->
+          <div class="evidence-card" id="ev-card-behavior">
+            <div class="evidence-header">
+              <span class="evidence-tag">BEHAVIORAL DYNAMICS</span>
+              <span class="badge badge-low" id="ev-badge-behavior">Natural</span>
+            </div>
+            <div class="evidence-detail-row">
+              <span class="evidence-primary-text" id="ev-primary-behavior">Natural Human Cadence</span>
+              <span class="evidence-secondary-text" id="ev-sub-behavior">Variance: 36ms</span>
+            </div>
+            <span class="evidence-secondary-text" id="ev-desc-behavior">Keystroke flight time variance and touch trajectory match human biological patterns.</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Recommended Action & Manual Overrides -->
+      <div class="action-box">
+        <div class="action-box-title">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Security Operator Decision Override</span>
+        </div>
+        <p style="font-size: 11.5px; color: var(--text-muted);">Override automated machine evaluation and log operator action into the permanent audit trail.</p>
+        <div class="action-buttons-row">
+          <button class="btn btn-secondary btn-sm" id="btn-override-allow">Allow</button>
+          <button class="btn btn-secondary btn-sm" id="btn-override-challenge">Challenge (MFA)</button>
+          <button class="btn btn-danger btn-sm" id="btn-override-block">Block</button>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       4. MODAL: CREATE API KEY PAIR
+       ========================================================================= -->
+  <div id="modal-create-key" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-title">Generate New API Key Pair</span>
+        <button id="btn-close-create-key-modal" class="modal-close-btn">&times;</button>
+      </div>
+
+      <form id="form-create-key">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Key Name / Description</label>
+            <input type="text" id="new-key-name" required class="form-input" placeholder="e.g. Production Mobile Gateway Key" value="Production Server Key">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Environment</label>
+            <select id="new-key-env" class="form-select">
+              <option value="sandbox">Sandbox (Test Mode - td_pub_test_...)</option>
+              <option value="live">Live (Production Mode - td_pub_live_...)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-create-key">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Generate Key Pair</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

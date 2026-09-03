@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Third-Party Integration Demo | TrustDNA 2-Legged Flow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      background: #090d16;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      padding: 30px 20px;
+    }
+    .demo-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 36px;
+    }
+    .demo-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .demo-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    @media (max-width: 850px) {
+      .demo-grid { grid-template-columns: 1fr; }
+    }
+    .store-card {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .store-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 16px;
+      margin-bottom: 22px;
+    }
+    .store-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+    .store-brand span { color: #38bdf8; }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #38bdf8;
+    }
+    .order-summary {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 14px;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      color: #94a3b8;
+    }
+    .order-row.total {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 8px;
+      font-weight: 700;
+      color: #f8fafc;
+      font-size: 16px;
+    }
+    .pay-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #0ea5e9, #2563eb);
+      color: white;
+      border: none;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s;
+    }
+    .pay-btn:hover { opacity: 0.95; }
+    
+    /* Inspector Panel */
+    .inspector-card {
+      background: #0b1120;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 16px;
+      padding: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+    .inspector-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .inspector-title {
+      font-size: 13px;
+      color: #38bdf8;
+      font-weight: 600;
+    }
+    .telemetry-metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .t-metric {
+      background: #1e293b;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .t-metric-label {
+      font-size: 10px;
+      color: #64748b;
+      margin-bottom: 3px;
+    }
+    .t-metric-val {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+    .token-box {
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 10px;
+      word-break: break-all;
+      color: #a5f3fc;
+      font-size: 11px;
+      max-height: 80px;
+      overflow-y: auto;
+      margin-top: 6px;
+    }
+    .result-alert {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: none;
+    }
+    .result-alert.allow {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #10b981;
+      color: #34d399;
+      display: block;
+    }
+    .result-alert.challenge {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid #f59e0b;
+      color: #fbbf24;
+      display: block;
+    }
+    .result-alert.block {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #f87171;
+      display: block;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .back-link:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+  <div class="container" style="max-width: 1100px; margin: 0 auto;">
+    <a href="../index.html" class="back-link">← Back to TrustDNA Showcase</a>
+
+    <div class="demo-header">
+      <div class="demo-badge">2-LEGGED THIRD-PARTY INTEGRATION DEMO</div>
+      <h1>Real-World E-Commerce Checkout</h1>
+      <p style="color: #94a3b8; font-size: 15px;">
+        This page demonstrates how an external store embeds <code>trustdna.js</code> to capture passive behavioral telemetry and request real-time server-to-server risk decisions without collecting PII.
+      </p>
+    </div>
+
+    <div class="demo-grid">
+      <!-- Left: Mock Third-Party Store Checkout -->
+      <div class="store-card">
+        <div class="store-title-row">
+          <div class="store-brand">Apex<span>Gadgets</span> Checkout</div>
+          <span style="font-size: 12px; color: #10b981;">🔒 256-Bit SSL</span>
+        </div>
+
+        <form id="checkout-form">
+          <div class="form-group">
+            <label for="cust-name">Customer Name</label>
+            <input type="text" id="cust-name" class="form-input" placeholder="e.g. David Adeleke" required>
+          </div>
+
+          <div class="form-group">
+            <label for="cust-email">Email Address</label>
+            <input type="email" id="cust-email" class="form-input" placeholder="david@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="card-num">Debit / Credit Card</label>
+            <input type="text" id="card-num" class="form-input" placeholder="4152 •••• •••• 9281" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label for="card-exp">Expiry (MM/YY)</label>
+              <input type="text" id="card-exp" class="form-input" placeholder="08/28" required>
+            </div>
+            <div class="form-group">
+              <label for="card-cvv">CVV</label>
+              <input type="password" id="card-cvv" class="form-input" placeholder="•••" maxlength="4" required>
+            </div>
+          </div>
+
+          <div class="order-summary">
+            <div class="order-row">
+              <span>Item: Sony WH-1000XM5</span>
+              <span>₦43,000</span>
+            </div>
+            <div class="order-row">
+              <span>Express Delivery (Lagos)</span>
+              <span>₦2,000</span>
+            </div>
+            <div class="order-row total">
+              <span>Total Amount</span>
+              <span>₦45,000 NGN</span>
+            </div>
+          </div>
+
+          <button type="submit" id="submit-btn" class="pay-btn">
+            <span>Pay ₦45,000 Securely</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </form>
+
+        <div id="decision-result" class="result-alert"></div>
+      </div>
+
+      <!-- Right: TrustDNA Live Telemetry Inspector -->
+      <div class="inspector-card">
+        <div class="inspector-header">
+          <div class="inspector-title">⚡ TrustDNA Telemetry Inspector</div>
+          <span id="sdk-status" style="color: #34d399; font-size: 11px;">● Active SDK (v1.0)</span>
+        </div>
+
+        <p style="color: #64748b; font-size: 11px; margin-bottom: 14px;">
+          Type in the form on the left. TrustDNA measures your typing intervals and device entropy in real time:
+        </p>
+
+        <div class="telemetry-metric-grid">
+          <div class="t-metric">
+            <div class="t-metric-label">KEYSTROKES TRACKED</div>
+            <div id="metric-keys" class="t-metric-val">0 keys</div>
+          </div>
+          <div class="t-metric">
+            <div class="t-metric-label">DWELL TIME (MEAN)</div>
+            <div id="metric-dwell" class="t-metric-val">0.0 ms</div>
+          </div>
+          <div class="t-metric">
+            <div class="t-metric-label">FLIGHT TIME VARIANCE</div>
+            <div id="metric-flight" class="t-metric-val">0.0 ms</div>
+          </div>
+          <div class="t-metric">
+            <div class="t-metric-label">PASTE DETECTIONS</div>
+            <div id="metric-paste" class="t-metric-val">0 events</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Hardware Entropy Hash:</div>
+          <div id="metric-hw" style="color: #f1f5f9; font-size: 11px;">Computing...</div>
+        </div>
+
+        <div>
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Signed Telemetry Token (td_tok_...):</div>
+          <div id="token-display" class="token-box">Type in form to generate live token...</div>
+        </div>
+
+        <div style="margin-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 12px;">
+          <div style="font-size: 10px; color: #64748b; line-height: 1.5;">
+            🛡️ <strong>Zero PII Guarantee:</strong> No credit card numbers, names, or passwords are ever captured or transmitted to TrustDNA.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Client SDK -->
+  <script src="../public/v1/trustdna.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initialize TrustDNA Client SDK with Merchant Publishable Key
+      const trustdna = TrustDNA.init({
+        publishableKey: 'td_pub_test_store_9921',
+        apiEndpoint: 'http://localhost:8000/api/v1',
+        debug: true
+      });
+
+      // UI Elements
+      const metricKeys = document.getElementById('metric-keys');
+      const metricDwell = document.getElementById('metric-dwell');
+      const metricFlight = document.getElementById('metric-flight');
+      const metricPaste = document.getElementById('metric-paste');
+      const metricHw = document.getElementById('metric-hw');
+      const tokenDisplay = document.getElementById('token-display');
+      const form = document.getElementById('checkout-form');
+      const resultAlert = document.getElementById('decision-result');
+      const submitBtn = document.getElementById('submit-btn');
+
+      // Update Inspector Telemetry Live as User Interacts
+      async function updateInspector() {
+        const entropy = trustdna.getHardwareEntropy();
+        const behavior = trustdna.getBehavioralSignals();
+
+        metricKeys.textContent = `${behavior.sample_keystrokes} keys`;
+        metricDwell.textContent = `${behavior.dwell_mean_ms} ms`;
+        metricFlight.textContent = `±${behavior.flight_std_ms} ms`;
+        metricPaste.textContent = `${behavior.paste_events_count} events`;
+        metricHw.textContent = `${entropy.screen_w}x${entropy.screen_h} | WebGL: ${entropy.webgl_vendor} | Hash: ${entropy.hardware_hash}`;
+
+        if (behavior.sample_keystrokes > 2) {
+          const token = await trustdna.getTelemetryToken();
+          tokenDisplay.textContent = token;
+        }
+      }
+
+      window.addEventListener('keyup', updateInspector);
+      window.addEventListener('paste', updateInspector);
+      updateInspector();
+
+      // 2. Handle Form Submission (The 2-Legged Flow)
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Evaluating Risk with TrustDNA...';
+
+        // Step 1: Obtain signed telemetry token from TrustDNA SDK
+        const telemetryToken = await trustdna.getTelemetryToken();
+
+        // Step 2: Customer Backend calls TrustDNA API (simulated directly here)
+        try {
+          const res = await fetch('http://localhost:8000/api/v1/risk/evaluate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer td_sec_test_store_secret'
+            },
+            body: JSON.stringify({
+              user_id: 'usr_store_customer_42',
+              telemetry_token: telemetryToken,
+              transaction: {
+                amount: 45000,
+                currency: 'NGN'
+              }
+            })
+          });
+
+          const data = await res.json();
+          resultAlert.className = `result-alert ${data.decision}`;
+
+          if (data.decision === 'allow') {
+            resultAlert.innerHTML = `
+              <strong>✓ Payment Approved (Trust Score: ${data.trust_score}/100)</strong><br>
+              Decision: ALLOW (Latency: ${data.latency_ms}ms). Your order has been placed successfully!
+            `;
+          } else if (data.decision === 'challenge') {
+            resultAlert.innerHTML = `
+              <strong>⚠ Step-Up Authentication Required (Trust Score: ${data.trust_score}/100)</strong><br>
+              Decision: CHALLENGE (Latency: ${data.latency_ms}ms). Please enter the 6-digit OTP sent to your phone.
+            `;
+          } else {
+            resultAlert.innerHTML = `
+              <strong>✕ Transaction Blocked by Security Engine (Trust Score: ${data.trust_score}/100)</strong><br>
+              Decision: BLOCK (Latency: ${data.latency_ms}ms). Suspicious activity detected.
+            `;
+          }
+        } catch (err) {
+          resultAlert.className = 'result-alert allow';
+          resultAlert.innerHTML = '<strong>Payment Processed (Fallback Mode)</strong>';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Pay ₦45,000 Securely</span>';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

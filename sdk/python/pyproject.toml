@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trustdna"
+version = "1.0.0"
+description = "Official Python SDK for TrustDNA Real-Time Risk Intelligence Engine"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "TrustDNA Security Team", email = "dev@trustdna.io" }]
+keywords = ["fraud-prevention", "risk-intelligence", "security", "biometrics", "trustdna"]
+dependencies = [
+    "requests>=2.28.0",
+    "pydantic>=2.0.0"
+]

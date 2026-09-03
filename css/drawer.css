@@ -1,0 +1,205 @@
+/* ==========================================================================
+   TrustDNA Enterprise Design System - Forensic Investigation Drawer
+   Slide-out Evidence & Signal Decomposition Panel
+   ========================================================================== */
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.drawer-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.investigation-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 520px;
+  max-width: 90vw;
+  background-color: var(--bg-surface);
+  border-left: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-drawer);
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.investigation-drawer.active {
+  transform: translateX(0);
+}
+
+/* Drawer Header */
+.drawer-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--bg-sidebar);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.drawer-event-id {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.drawer-timestamp {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Drawer Scroll Content */
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Big Risk Score Assessment Strip */
+.assessment-strip {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.assessment-score-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.assessment-score-val {
+  font-size: 28px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  letter-spacing: -1px;
+}
+.score-high { color: var(--risk-high); }
+.score-med { color: var(--risk-med); }
+.score-low { color: var(--risk-low); }
+
+.assessment-score-max {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Structured Evidence Decomposition */
+.evidence-section-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.evidence-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.evidence-card {
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--border-medium);
+  border-radius: var(--radius-xs);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.evidence-card.flagged {
+  border-left-color: var(--risk-high);
+  background: rgba(239, 68, 68, 0.04);
+}
+.evidence-card.caution {
+  border-left-color: var(--risk-med);
+  background: rgba(245, 158, 11, 0.04);
+}
+.evidence-card.cleared {
+  border-left-color: var(--risk-low);
+}
+
+.evidence-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.evidence-tag {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.evidence-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.evidence-primary-text {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.evidence-secondary-text {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Recommended Action & Overrides */
+.action-box {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-box-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-buttons-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}

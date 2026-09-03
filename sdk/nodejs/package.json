@@ -1,0 +1,19 @@
+{
+  "name": "@trustdna/node",
+  "version": "1.0.0",
+  "description": "Official Node.js and TypeScript SDK for TrustDNA Real-Time Risk Intelligence Engine",
+  "main": "index.js",
+  "types": "types.d.ts",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "trustdna",
+    "fraud-prevention",
+    "risk-intelligence",
+    "biometrics",
+    "security"
+  ],
+  "author": "TrustDNA Security Team <dev@trustdna.io>",
+  "license": "MIT"
+}
